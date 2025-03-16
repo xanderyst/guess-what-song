@@ -11,7 +11,12 @@ function useFetch<T>(url: string | null) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(url);
+        const response = await fetch(url,
+          {
+            method: 'GET',
+            headers: {'Access-Control-Allow-Origin': 'https://itunes.apple.com'}
+          }
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
