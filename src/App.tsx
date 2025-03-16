@@ -4,9 +4,8 @@ import ArtistsList from "./ArtistsList";
 import GuessSongContainer from "./GuessSongContainer";
 import { useState, useEffect } from "react";
 import logo from "./assets/guess-what-song-logo.svg";
-import useFetch from "./hooks/useFetch"; // Assuming useFetch is in hooks folder
+import useFetch from "./hooks/useFetch";
 import { Artist } from './common/types';
-// Define Artist type
 
 // Define response type for API
 interface ItunesApiResponse {
@@ -15,18 +14,20 @@ interface ItunesApiResponse {
 
 function App() {
   const [artistInput, setArtistInput] = useState<string>("");
-  const [debouncedArtist, setDebouncedArtist] = useState<string>("");
+  const [debouncedArtist, setDebouncedArtist] = useState<string | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-  // Debounce user input to reduce API calls
+  // Debounce user input but only update if there's input
   useEffect(() => {
-    const handler = setTimeout(() => setDebouncedArtist(artistInput), 50);
+    const handler = setTimeout(() => setDebouncedArtist(artistInput), 300);
     return () => clearTimeout(handler);
   }, [artistInput]);
 
-  const searchUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(
+  const searchUrl = debouncedArtist !== null
+    ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
-      )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`;
+      )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`
+    : null; // Prevent API call when search is empty
 
   const { data, error } = useFetch<ItunesApiResponse>(searchUrl);
 
@@ -37,6 +38,7 @@ function App() {
   const fetchNewArtist = () => {
     setSelectedArtist(null);
     setArtistInput("");
+    setDebouncedArtist(null);
   };
 
   return (
@@ -62,6 +64,7 @@ function App() {
           <Button
             className="mt-4 p-2 text-white rounded w-full"
             onClick={() => setDebouncedArtist(artistInput)}
+            disabled={!artistInput.trim()} // Disable search if empty
           >
             Search
           </Button>
