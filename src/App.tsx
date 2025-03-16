@@ -23,7 +23,7 @@ function App() {
     return () => clearTimeout(handler);
   }, [artistInput]);
 
-  const searchUrl = debouncedArtist !== null
+  const searchUrl = debouncedArtist
     ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
       )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`
@@ -70,7 +70,7 @@ function App() {
           </Button>
 
           {error && <p>Error fetching data {error.toString()}</p>}
-          {data && <ArtistsList artists={data.results} selectArtist={onArtistClick} />}
+          {debouncedArtist && data && <ArtistsList artists={data.results} selectArtist={onArtistClick} />}
         </div>
       )}
 
