@@ -1,9 +1,0 @@
-{
-    "rewrites": [
-      {
-        "source": "/proxy/itunes",
-        "destination": "https://itunes.apple.com"
-      }
-    ]
-  }
-  

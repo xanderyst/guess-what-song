@@ -30,7 +30,7 @@ function App() {
   //   : null; // Prevent API call when search is empty
 
   const searchUrl = debouncedArtist
-    ? `https://guess-what-song.vercel.app/proxy/itunes/search?term=${encodeURIComponent(
+    ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
       )}&entity=musicArtist&limit=10`
     : null; // Prevent API call when search is empty
