@@ -48,16 +48,22 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
         setPlayTime(playTime + (guessCount + 1) * 1000);
     };
 
+    const computeGuessColor = (number: number) => {
+        if((number-1)< guessCount) return 'bg-secondary';
+        if((number-1) === guessCount) return 'border-primary text-zinc-900';
+        return ''
+    }
+
     return (
         <>
-            <div className="rounded-3xl p-8 space-y-4">
+            <div className="rounded-3xl pb-8 pl-3 pr-3 space-y-4">
                 {[1, 2, 3, 4, 5, 6].map((number) => (
                     <div key={number} className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400">
+                        <div className={`w-8 h-8 ${computeGuessColor(number)} rounded-full border border-zinc-400 flex items-center justify-center text-zinc-400`}>
                             {number}
                         </div>
-                        <div className="flex-1 h-12 rounded-full border border-zinc-700 px-4 flex items-center">
-                            <span className="flex text-zinc-500">
+                        <div className={`flex-1 h-11 ${computeGuessColor(number)} rounded-full border border-zinc-400 px-4 flex items-center`}>
+                            <span className="flex text-zinc-400">
                                 <RenderGuess guess={guesses[number-1]}/>
                             </span>
                         </div>

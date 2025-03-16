@@ -5,6 +5,8 @@ import GuessSongContainer from "./GuessSongContainer";
 import { useState, useEffect } from 'react';
 import useFetch from "./hooks/useFetch";
 import { uniq } from "lodash";
+import logo from './assets/guess-what-song-logo.svg';
+
 interface Artist {
   artistId: number,
   artistLinkUrl: string,
@@ -55,15 +57,18 @@ function App() {
 
   return (
     <main className="p-6 max-w-2xl mx-auto">
-      <h1 className="flex flex-col items-center text-2xl font-bold mb-4">Guess What Song?</h1>
+      <div className="flex flex-col items-center">
+        <img className="h-20 m-6" src={logo} alt="" />
+        <h1 className="text-2xl font-bold mb-8">Guess What Song?</h1>
+      </div>
       {
         !selectedArtist &&
         <div>
-          <h4 className="font-bold mb-4">Search for an artist, and we'll randomly play a snippet of one of their songs. You have 6 chances to guess the correct song title! We support multiple languages.</h4>
+          <h4 className="font-medium mt-4 mb-7">Search for an artist, and we'll randomly play a snippet of one of their songs. You have 6 chances to guess the correct song title! We support multiple languages.</h4>
           <h1 className="text-2xl font-bold mb-4"></h1>
           <Input placeholder="Search artist..." value={artistInput} onChange={(e) => setArtistInput(e.target.value)} className="border p-2 w-full"></Input>
           <Button
-            className="mt-2 p-2 text-white rounded w-full"
+            className="mt-4 p-2 text-white rounded w-full"
             onClick = {()=>(fetchArtists(artistInput))}
           >Search</Button>
           <ArtistsList artists={artistList} selectArtist={onArtistClick}/>

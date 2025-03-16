@@ -104,7 +104,7 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }) {
         className="h-3 bg-stone-300 w-full"
         segments={[
           { value: progress, color: "bg-purple-600" },
-          { value: sectionProgress, color: "bg-purple-400" },
+          { value: sectionProgress, color: "bg-purple-300" },
         ]}
       />
       {/* ✅ Timestamp below the progress bar */}

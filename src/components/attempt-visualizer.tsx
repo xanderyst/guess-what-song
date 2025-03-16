@@ -13,7 +13,7 @@ export default function AttemptVisualizer({
 }: AttemptVisualizerProps) {
   const getColor = (attempt: string | null | undefined): string => {
     if (attempt === correctAnswer) return "bg-purple-600"; // Purple (Correct)
-    if (!attempt || attempt.trim() === "") return "bg-purple-200"; // Gray (Empty)
+    if (!attempt || attempt.trim() === "") return "bg-purple-300"; // Gray (Empty)
     return "bg-red-600"; // Red (Incorrect)
   };
 
