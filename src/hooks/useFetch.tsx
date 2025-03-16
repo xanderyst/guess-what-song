@@ -11,7 +11,13 @@ function useFetch<T>(url: string | null) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
+        const response = await fetch(`${url}`, {
+            method: 'GET',
+            mode: 'cors', // Enable CORS mode
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
