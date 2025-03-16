@@ -23,10 +23,16 @@ function App() {
     return () => clearTimeout(handler);
   }, [artistInput]);
 
+  // const searchUrl = debouncedArtist
+  //   ? `https://itunes.apple.com/search?term=${encodeURIComponent(
+  //       debouncedArtist
+  //     )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`
+  //   : null; // Prevent API call when search is empty
+
   const searchUrl = debouncedArtist
     ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
-      )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`
+      )}&entity=musicArtist&limit=10&country=tw`
     : null; // Prevent API call when search is empty
 
   const { data, error } = useFetch<ItunesApiResponse>(searchUrl);
