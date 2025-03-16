@@ -66,7 +66,7 @@ function App() {
             Search
           </Button>
 
-          {error && <p>Error fetching data</p>}
+          {error && <p>Error fetching data {error.toString()}</p>}
           {data && <ArtistsList artists={data.results} selectArtist={onArtistClick} />}
         </div>
       )}
