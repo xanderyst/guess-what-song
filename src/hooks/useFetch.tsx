@@ -11,13 +11,7 @@ function useFetch<T>(url: string | null) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${url}`, {
-            method: 'GET',
-            mode: 'cors', // Enable CORS mode
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
