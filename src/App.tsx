@@ -32,7 +32,7 @@ function App() {
   const searchUrl = debouncedArtist
     ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
-      )}&entity=musicArtist&limit=10&country=tw`
+      )}&entity=musicArtist&limit=10`
     : null; // Prevent API call when search is empty
 
   const { data, error } = useFetch<ItunesApiResponse>(searchUrl);
