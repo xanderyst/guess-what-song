@@ -4,7 +4,7 @@ import { Button } from "./components/ui/button";
 import { AutoComplete } from "./components/autocomplete";
 import { uniq } from "lodash";
 import MusicPlayer from "./MusicPlayer";
-
+import { Song } from "./common/types";
 function RenderGuess ({ guess }: {guess: string}) {
     if(guess === '') return (<>Skipped</>);
     if(guess) return (<><X color="red"/> {guess}</>)
@@ -12,8 +12,8 @@ function RenderGuess ({ guess }: {guess: string}) {
 }
 
 interface GuessingPhaseProps {
-    randomSong: any;
-    songList: any[];
+    randomSong: Song;
+    songList: Song[];
     setEndGameMessage: (message: string) => void;
     setAttempts: (attempts: string[]) => void;
 }
@@ -22,7 +22,7 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
     const [guessSongInput, setGuessSongInput] = useState("");
     const [guessCount, setGuessCount] = useState(0);
     const [playTime, setPlayTime] = useState(1000);
-    const [guesses, setGuesses] = useState([]);
+    const [guesses, setGuesses] = useState<string[]>([]);
 
     const songNames = songList.map((song) => song.trackName); // Single song guessing
     const options = uniq(songNames).map((song) => ({ value: song, label: song }));
@@ -49,9 +49,9 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
     };
 
     const computeGuessColor = (number: number) => {
-        if((number-1)< guessCount) return 'bg-secondary';
+        if((number-1)< guessCount) return 'bg-secondary text-zinc-400';
         if((number-1) === guessCount) return 'border-primary text-zinc-900';
-        return ''
+        return 'text-zinc-400 border-zinc-400'
     }
 
     return (
@@ -59,10 +59,10 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
             <div className="rounded-3xl pb-8 pl-3 pr-3 space-y-4">
                 {[1, 2, 3, 4, 5, 6].map((number) => (
                     <div key={number} className="flex items-center gap-4">
-                        <div className={`w-8 h-8 ${computeGuessColor(number)} rounded-full border border-zinc-400 flex items-center justify-center text-zinc-400`}>
+                        <div className={`w-8 h-8  ${computeGuessColor(number)} rounded-full border flex items-center justify-center`}>
                             {number}
                         </div>
-                        <div className={`flex-1 h-11 ${computeGuessColor(number)} rounded-full border border-zinc-400 px-4 flex items-center`}>
+                        <div className={`flex-1 h-11 ${computeGuessColor(number)} rounded-full border px-4 flex items-center`}>
                             <span className="flex text-zinc-400">
                                 <RenderGuess guess={guesses[number-1]}/>
                             </span>

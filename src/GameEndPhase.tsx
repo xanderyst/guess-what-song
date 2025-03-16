@@ -2,9 +2,9 @@ import { Button } from "./components/ui/button";
 import AppleMusicEmbed from "./components/apple-music-embed";
 import MusicPlayer from "./MusicPlayer";
 import AttemptVisualizer from "./components/attempt-visualizer";
-
+import { Song } from "./common/types";
 interface GameEndPhaseProps {
-    randomSong: any;
+    randomSong: Song;
     endGameMessage: string;
     selectRandomSong: () => void;
     fetchNewArtist: () => void;
@@ -12,7 +12,6 @@ interface GameEndPhaseProps {
 }
 
 export default function GameEndPhase({ randomSong, endGameMessage, selectRandomSong, fetchNewArtist, attempts }: GameEndPhaseProps) {
-    console.log('attempts', attempts);
     return (
         <div>
             <AppleMusicEmbed songUrl={randomSong.trackViewUrl}/>

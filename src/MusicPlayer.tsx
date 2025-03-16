@@ -2,8 +2,14 @@ import { useRef, useState, useEffect } from "react";
 import { Play, Pause } from "lucide-react"; // Added Pause icon
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Song } from "./common/types";
+interface MusicPlayerProps {
+    song: Song;
+    sectionDuration: number;
+    total?: number;
+}
 
-export default function MusicPlayer({ song, sectionDuration, total=16000 }) {
+export default function MusicPlayer({ song, sectionDuration, total=16000 }: MusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const totalSeconds = total/1000;
