@@ -17,7 +17,7 @@ interface ItunesApiResponse {
 export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSongContainerProps) {
   const { artistId } = artist;
   //  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&lang=zh_tw&country=tw`;
-  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&country=hk`;
+  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&country=tw`;
   const { loading, data, error } = useFetch<ItunesApiResponse>(url);
   
   const [randomSong, setRandomSong] = useState<Song | null>(null);
