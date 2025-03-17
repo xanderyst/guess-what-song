@@ -12,15 +12,15 @@ export default function LanguageSwitcher() {
     <div className="flex justify-end">
       <button
         onClick={() => changeLanguage('en-US')}
-        className={`p-2 border rounded-l ${i18n.language === 'en-US' ? 'bg-purple-600 text-white' : 'bg-primary/20'}`}
+        className={`p-1.5 text-sm border rounded-l ${i18n.language === 'en-US' ? 'bg-purple-600 text-white' : 'bg-primary/20'}`}
       >
-        English
+        EN
       </button>
       <button
         onClick={() => changeLanguage('zh-TW')}
-        className={`p-2 border rounded-r ${i18n.language === 'zh-TW' ? 'bg-purple-600 text-white' : 'bg-primary/20'}`}
+        className={`p-1.5 text-sm border rounded-r ${i18n.language === 'zh-TW' ? 'bg-purple-600 text-white' : 'bg-primary/20'}`}
       >
-        中文
+        中
       </button>
     </div>
   );

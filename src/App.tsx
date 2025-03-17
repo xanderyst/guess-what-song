@@ -68,11 +68,10 @@ function App() {
 
   return (
     <main className="p-6 max-w-2xl mx-auto">
-      
-      <div className="flex items-center justify-between w-full mb-6">
+      <div className="flex items-center justify-between w-full mt-6 mb-6">
         <div className="flex-1"></div> {/* Empty div to push logo to center */}
         <img className="h-20 mx-auto" src={logo} alt="Guess What Song Logo" />
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex justify-end self-start">
           <LanguageSwitcher />
         </div>
       </div>
