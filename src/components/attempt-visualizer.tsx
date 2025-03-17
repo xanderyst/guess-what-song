@@ -27,7 +27,7 @@ export default function AttemptVisualizer({
       {attemptColors.map((color, index) => (
         <div
           key={index}
-          className={`w-8 h-4 rounded-sm ${color}`}
+          className={`w-8 h-3 rounded-sm ${color}`}
         />
       ))}
     </div>
