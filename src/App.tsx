@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import logo from "./assets/guess-what-song-logo.svg";
 import useFetch from "./hooks/useFetch";
 import { Artist } from './common/types';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from "./components/LanguageSwitcher"; // Import the toggle component
 
 // Define response type for API
 interface ItunesApiResponse {
@@ -13,9 +15,19 @@ interface ItunesApiResponse {
 }
 
 function App() {
+  const { t, i18n } = useTranslation(); // Get language settings
   const [artistInput, setArtistInput] = useState<string>("");
   const [debouncedArtist, setDebouncedArtist] = useState<string | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+
+  // Map language to corresponding country and language codes
+  const langMap: Record<string, { lang: string; country: string }> = {
+    "zh-TW": { lang: "zh_tw", country: "tw" },
+    "en-US": { lang: "en_us", country: "us" },
+  };
+  
+  // Get current language settings or default to 'en-US'
+  const { lang, country } = langMap[i18n.language] || langMap["en-US"];
 
   // Debounce user input but only update if there's input
   useEffect(() => {
@@ -29,11 +41,18 @@ function App() {
   //     )}&media=music&entity=musicArtist&limit=10&lang=zh_tw&country=tw`
   //   : null; // Prevent API call when search is empty
 
+  // const searchUrl = debouncedArtist
+  //   ? `https://itunes.apple.com/search?term=${encodeURIComponent(
+  //       debouncedArtist
+  //     )}&entity=musicArtist&limit=10`
+  //   : null; // Prevent API call when search is empty
+
+  // Dynamically update search URL based on language
   const searchUrl = debouncedArtist
     ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
-      )}&entity=musicArtist&limit=10`
-    : null; // Prevent API call when search is empty
+      )}&entity=musicArtist&limit=10&lang=${lang}&country=${country}`
+    : null;
 
   const { data, error } = useFetch<ItunesApiResponse>(searchUrl);
 
@@ -49,20 +68,25 @@ function App() {
 
   return (
     <main className="p-6 max-w-2xl mx-auto">
+      
+      <div className="flex items-center justify-between w-full mb-6">
+        <div className="flex-1"></div> {/* Empty div to push logo to center */}
+        <img className="h-20 mx-auto" src={logo} alt="Guess What Song Logo" />
+        <div className="flex-1 flex justify-end">
+          <LanguageSwitcher />
+        </div>
+      </div>
       <div className="flex flex-col items-center">
-        <img className="h-20 m-6" src={logo} alt="Guess What Song Logo" />
-        <h1 className="text-2xl font-bold mb-8">Guess What Song?</h1>
+        <h1 className="text-2xl font-bold mb-8">{t("title")}</h1>
       </div>
 
       {!selectedArtist && (
         <div>
           <h4 className="font-medium mt-4 mb-7">
-            Search for an artist, and we'll randomly play a snippet of one of
-            their songs. You have 6 chances to guess the correct song title! We
-            support multiple languages.
+          {t("search_description")}
           </h4>
           <Input
-            placeholder="Search artist..."
+            placeholder={t("search_artist")}
             value={artistInput}
             onChange={(e) => setArtistInput(e.target.value)}
             className="border p-2 w-full"
@@ -72,7 +96,7 @@ function App() {
             onClick={() => setDebouncedArtist(artistInput)}
             disabled={!artistInput.trim()} // Disable search if empty
           >
-            Search
+            {t("search")}
           </Button>
 
           {error && <p>Error fetching data {error.toString()}</p>}

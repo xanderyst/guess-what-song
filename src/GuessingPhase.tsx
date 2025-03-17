@@ -5,10 +5,13 @@ import { AutoComplete } from "./components/autocomplete";
 import { uniq } from "lodash";
 import MusicPlayer from "./MusicPlayer";
 import { Song } from "./common/types";
+import { useTranslation } from 'react-i18next';
+
 function RenderGuess ({ guess }: {guess: string}) {
-    if(guess === '') return (<>Skipped</>);
-    if(guess) return (<><X color="red"/> {guess}</>)
-    return (<></>)
+    const { t } = useTranslation();
+    if (guess === '') return (<>{t("skipped")}</>);
+    if (guess) return (<><X color="red"/> {guess}</>);
+    return (<></>);
 }
 
 interface GuessingPhaseProps {
@@ -19,29 +22,32 @@ interface GuessingPhaseProps {
 }
 
 export default function GuessingPhase({ randomSong, songList, setEndGameMessage, setAttempts }: GuessingPhaseProps) {
+    const { t } = useTranslation();
     const [guessSongInput, setGuessSongInput] = useState("");
     const [guessCount, setGuessCount] = useState(0);
     const [playTime, setPlayTime] = useState(1000);
     const [guesses, setGuesses] = useState<string[]>([]);
 
-    const songNames = songList.map((song) => song.trackName); // Single song guessing
+    const songNames = songList.map((song) => song.trackName);
     const options = uniq(songNames).map((song) => ({ value: song, label: song }));
 
     const confirmGuess = () => {
         const newGuesses = [...guesses];
         newGuesses[guessCount] = guessSongInput ? guessSongInput : '';
+
         if (guessSongInput && guessSongInput === randomSong.trackName) {
             setPlayTime(30000);
             setAttempts(newGuesses);
-            setEndGameMessage(`You win! You got it within ${playTime / 1000} seconds`);
+            setEndGameMessage(t("you_win", { time: playTime / 1000 }));
             return;
         }
         if (guessCount === 5) {
             setPlayTime(30000);
             setAttempts(newGuesses);
-            setEndGameMessage('You lose! Better luck next time.');
+            setEndGameMessage(t("you_lose"));
             return;
         }
+        
         setGuessSongInput('');
         setGuesses(newGuesses);
         setGuessCount(guessCount + 1);
@@ -51,7 +57,7 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
     const computeGuessColor = (number: number) => {
         if((number-1)< guessCount) return 'bg-secondary text-zinc-400';
         if((number-1) === guessCount) return 'border-primary text-zinc-900';
-        return 'text-zinc-400 border-zinc-400'
+        return 'text-zinc-400 border-zinc-400';
     }
 
     return (
@@ -59,12 +65,12 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
             <div className="rounded-3xl pb-8 pl-3 pr-3 space-y-4">
                 {[1, 2, 3, 4, 5, 6].map((number) => (
                     <div key={number} className="flex items-center gap-4">
-                        <div className={`w-8 h-8  ${computeGuessColor(number)} rounded-full border flex items-center justify-center`}>
+                        <div className={`w-8 h-8 ${computeGuessColor(number)} rounded-full border flex items-center justify-center`}>
                             {number}
                         </div>
                         <div className={`flex-1 h-11 ${computeGuessColor(number)} rounded-full border px-4 flex items-center`}>
                             <span className="flex text-zinc-400">
-                                <RenderGuess guess={guesses[number-1]}/>
+                                <RenderGuess guess={guesses[number-1]} />
                             </span>
                         </div>
                     </div>
@@ -73,14 +79,14 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
             <MusicPlayer song={randomSong} sectionDuration={playTime}/>
             <AutoComplete
                 options={options}
-                emptyMessage="No results."
-                placeholder="Know it? Search for the title!"
+                emptyMessage={t("no_results")}
+                placeholder={t("search_placeholder")}
                 onValueChange={setGuessSongInput}
                 value={guessSongInput}
             />
             <div className="flex justify-between pt-3">
-                <Button variant="secondary" onClick={confirmGuess}>Skip +{guessCount+1} sec</Button>
-                <Button disabled={!guessSongInput} onClick={confirmGuess}>Submit</Button>
+                <Button variant="secondary" onClick={confirmGuess}>{t("skip")} +{guessCount+1} sec</Button>
+                <Button disabled={!guessSongInput} onClick={confirmGuess}>{t("submit")}</Button>
             </div>
         </>
     );

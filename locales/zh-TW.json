@@ -1,0 +1,16 @@
+{
+    "title": "猜猜這首歌？",
+    "search_artist": "搜尋歌手...",
+    "search": "搜尋",
+    "search_description": "搜尋一位歌手，我們會隨機播放一段他們的歌曲。你有 6 次機會猜對歌曲名稱！我們支援多種語言。",
+    "skip": "跳過",
+    "submit": "輸入",
+    "you_win": "你贏了！你在 {{time}} 秒內猜對了！",
+    "you_lose": "你輸了！下次再來。",
+    "another_song": "給我另一首歌",
+    "different_artist": "換個歌手試試",
+    "search_placeholder": "搜尋歌名",
+    "no_results": "沒有結果",
+    "skipped": "跳過"
+  }
+  
