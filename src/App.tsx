@@ -29,9 +29,16 @@ function App() {
   // Get current language settings or default to 'en-US'
   const { lang, country } = langMap[i18n.language] || langMap["en-US"];
 
+  const processAndSetDebounceArtist = () => {
+    const newArtistInput = artistInput.replace(' ', '+');
+    setDebouncedArtist(newArtistInput);
+  }
+
   // Debounce user input but only update if there's input
   useEffect(() => {
-    const handler = setTimeout(() => setDebouncedArtist(artistInput), 300);
+    const handler = setTimeout(() => {
+      processAndSetDebounceArtist();
+    }, 300);
     return () => clearTimeout(handler);
   }, [artistInput]);
 
@@ -51,10 +58,10 @@ function App() {
   const searchUrl = debouncedArtist
     ? `https://itunes.apple.com/search?term=${encodeURIComponent(
         debouncedArtist
-      )}&entity=musicArtist&limit=10&lang=${lang}&country=${country}`
+      )}&entity=musicArtist&lang=${lang}&country=${country}`
     : null;
 
-  const { data, error } = useFetch<ItunesApiResponse>(searchUrl);
+  const { data } = useFetch<ItunesApiResponse>(searchUrl);
 
   const onArtistClick = (artist: Artist) => {
     setSelectedArtist(artist);
@@ -92,13 +99,11 @@ function App() {
           />
           <Button
             className="mt-4 p-2 text-white rounded w-full"
-            onClick={() => setDebouncedArtist(artistInput)}
+            onClick={() => processAndSetDebounceArtist()}
             disabled={!artistInput.trim()} // Disable search if empty
           >
             {t("search")}
           </Button>
-
-          {error && <p>Error fetching data {error.toString()}</p>}
           {debouncedArtist && data && <ArtistsList artists={data.results} selectArtist={onArtistClick} />}
         </div>
       )}

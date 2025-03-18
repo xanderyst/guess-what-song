@@ -8,7 +8,7 @@ interface ArtistsListProps {
 export default function ArtistsList({ artists, selectArtist }: ArtistsListProps) {
     return (
         <div className="mt-4">
-        {artists.map((artist) => (
+        {artists.slice(0,10).map((artist) => (
             <div
                 key={artist.artistId}
                 onClick={() => selectArtist(artist)}
