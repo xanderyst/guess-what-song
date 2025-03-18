@@ -1,6 +1,6 @@
 # Guess What Song
 
-[Play the game](guesswhatsong.com): guesswhatsong.com
+[Play the game](https://guesswhatsong.com): guesswhatsong.com
 
 Song guessing game with your favorite artist! Currently in Chinese and English.
 
