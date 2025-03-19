@@ -6,6 +6,8 @@ import { Skeleton } from "./components/ui/skeleton";
 import { Artist, Song } from "./common/types";
 import { Button } from "./components/ui/button";
 import { useTranslation } from 'react-i18next';
+import { langMap, chineseGenre } from "./common/constants";
+
 interface GuessSongContainerProps {
   artist: Artist;
   fetchNewArtist: () => void;
@@ -15,11 +17,19 @@ interface ItunesApiResponse {
   results: Song[];
 }
 
+const computeCountry = (genre:string, country:string) => {
+  return chineseGenre.some(word => genre.toLowerCase().includes(word.toLowerCase())) ? 'tw' : country;
+};
+
 export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSongContainerProps) {
-    const { t } = useTranslation(); // Get language settings
-  const { artistId } = artist;
+  const { t, i18n } = useTranslation(); // Get language settings
+  const { artistId, primaryGenreName } = artist;
+  // Get current language settings or default to 'en-US'
+  const { country } = langMap[i18n.language] || langMap["en-US"];
+  const computedCountry = computeCountry(primaryGenreName, country);
+
   //  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&lang=zh_tw&country=tw`;
-  const url = `https://corsanywhere-hsptaajs.b4a.run/https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&country=tw`;
+  const url = `https://corsanywhere-hsptaajs.b4a.run/https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&country=${computedCountry}`;
   const { loading, data, error } = useFetch<ItunesApiResponse>(url);
   
   const [randomSong, setRandomSong] = useState<Song | null>(null);
@@ -29,7 +39,6 @@ export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSong
   const songs = data?.results?.filter((item) => item.wrapperType === "track") || [];
 
   useEffect(() => {
-    console.log('data', data);
     if (songs.length > 0) {
       selectRandomSong();
     }

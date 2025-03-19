@@ -8,7 +8,7 @@ import useFetch from "./hooks/useFetch";
 import { Artist } from './common/types';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from "./components/LanguageSwitcher"; // Import the toggle component
-
+import { langMap } from "./common/constants";
 // Define response type for API
 interface ItunesApiResponse {
   results: Artist[];
@@ -20,18 +20,11 @@ function App() {
   const [debouncedArtist, setDebouncedArtist] = useState<string | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-  // Map language to corresponding country and language codes
-  const langMap: Record<string, { lang: string; country: string }> = {
-    "zh-TW": { lang: "zh_tw", country: "tw" },
-    "en-US": { lang: "en_us", country: "us" },
-  };
-  
   // Get current language settings or default to 'en-US'
   const { lang, country } = langMap[i18n.language] || langMap["en-US"];
 
   const processAndSetDebounceArtist = () => {
-    const newArtistInput = artistInput.replace(' ', '+');
-    setDebouncedArtist(newArtistInput);
+    setDebouncedArtist(artistInput);
   }
 
   // Debounce user input but only update if there's input
