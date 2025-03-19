@@ -11,6 +11,7 @@
     "different_artist": "Try a different artist",
     "search_placeholder": "Know it? Search for the title!",
     "no_results": "No results.",
-    "skipped": "Skipped"
+    "skipped": "Skipped",
+    "artist_no_songs": "Sorry, there are no songs available for the artist."
   }
   

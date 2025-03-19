@@ -4,7 +4,8 @@ import GuessingPhase from "./GuessingPhase";
 import GameEndPhase from "./GameEndPhase";
 import { Skeleton } from "./components/ui/skeleton";
 import { Artist, Song } from "./common/types";
-
+import { Button } from "./components/ui/button";
+import { useTranslation } from 'react-i18next';
 interface GuessSongContainerProps {
   artist: Artist;
   fetchNewArtist: () => void;
@@ -15,6 +16,7 @@ interface ItunesApiResponse {
 }
 
 export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSongContainerProps) {
+    const { t } = useTranslation(); // Get language settings
   const { artistId } = artist;
   //  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&lang=zh_tw&country=tw`;
   const url = `https://corsanywhere-hsptaajs.b4a.run/https://itunes.apple.com/lookup?id=${artistId}&entity=song&limit=200&country=tw`;
@@ -27,6 +29,7 @@ export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSong
   const songs = data?.results?.filter((item) => item.wrapperType === "track") || [];
 
   useEffect(() => {
+    console.log('data', data);
     if (songs.length > 0) {
       selectRandomSong();
     }
@@ -58,7 +61,12 @@ export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSong
     );
 
   if (error) return <div>There is an error</div>;
-
+  if (!loading && !songs.length) return (
+    <div className="flex flex-col items-center font-medium mt-4">
+    {t("artist_no_songs")}
+    <Button className="mt-7" onClick={fetchNewArtist}>{t("different_artist")}</Button>
+    </div>
+  )
   return (
     <>
       {data && randomSong && (
