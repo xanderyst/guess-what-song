@@ -17,7 +17,6 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }: Musi
   
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0); // ✅ Track current time
 
   const sectionProgress = (sectionDuration / total) * 100;
 
@@ -40,7 +39,10 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }: Musi
       timeoutRef.current = setTimeout(() => {
         audioRef.current?.pause();
         setIsPlaying(false);
-      }, sectionDuration);
+        setTimeout(() => {
+          setProgress(sectionProgress);
+        }, 0);
+      }, sectionDuration+60);
     }
   };
 
@@ -61,7 +63,6 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }: Musi
       audioRef.current.src = previewUrl;
       audioRef.current.load();
       setProgress(0);
-      setCurrentTime(0);
       setIsPlaying(false);
     }
   }, [previewUrl]);
@@ -71,7 +72,6 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }: Musi
       if (audioRef.current) {
         const { currentTime } = audioRef.current;
         setProgress((currentTime / totalSeconds) * 100 || 0);
-        setCurrentTime(currentTime); // ✅ Update currentTime state
       }
     };
 
@@ -115,7 +115,7 @@ export default function MusicPlayer({ song, sectionDuration, total=16000 }: Musi
       />
       {/* ✅ Timestamp below the progress bar */}
       <div className="text-sm text-gray-600 mt-1">
-        {formattedTime(currentTime)} / {formattedTime(totalSeconds)}
+        {formattedTime((progress/100)*totalSeconds)} / {formattedTime(totalSeconds)}
       </div>
       <Button 
         onClick={isPlaying ? pauseSong : playSong} 

@@ -24,7 +24,8 @@ function App() {
   const { lang, country } = langMap[i18n.language] || langMap["en-US"];
 
   const processAndSetDebounceArtist = () => {
-    setDebouncedArtist(artistInput);
+    const newArtistInput = artistInput.replace(' ', '+');
+    setDebouncedArtist(newArtistInput);
   }
 
   // Debounce user input but only update if there's input
