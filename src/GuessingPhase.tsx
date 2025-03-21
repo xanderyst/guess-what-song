@@ -85,7 +85,10 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
                 value={guessSongInput}
             />
             <div className="flex justify-between pt-3">
-                <Button variant="secondary" onClick={confirmGuess}>{t("skip")} +{guessCount+1} sec</Button>
+                <div className="flex gap-3">
+                    <Button variant="secondary" onClick={confirmGuess}>{t("skip")} +{guessCount+1} sec</Button>
+                    <Button variant="destructive" onClick={()=>{setEndGameMessage(t("you_lose"))}}>{t("give_up")}</Button>
+                </div>
                 <Button disabled={!guessSongInput} onClick={confirmGuess}>{t("submit")}</Button>
             </div>
         </>
