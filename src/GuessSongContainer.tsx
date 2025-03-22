@@ -18,6 +18,7 @@ interface ItunesApiResponse {
 }
 
 const computeCountry = (genre:string, country:string) => {
+  if(!genre) return country;
   return chineseGenre.some(word => genre.toLowerCase().includes(word.toLowerCase())) ? 'tw' : country;
 };
 

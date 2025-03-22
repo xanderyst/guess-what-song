@@ -27,9 +27,25 @@ export default function GuessingPhase({ randomSong, songList, setEndGameMessage,
     const [guessCount, setGuessCount] = useState(0);
     const [playTime, setPlayTime] = useState(1000);
     const [guesses, setGuesses] = useState<string[]>([]);
-
-    const songNames = songList.map((song) => song.trackName);
-    const options = uniq(songNames).map((song) => ({ value: song, label: song }));
+    
+    //process duplicate song names
+    const seen = new Set();
+    const songNames: string[] = [];
+    
+    songList.forEach(song => {
+    //only get the names before (
+    const original = song.trackName.split('(')[0].trim();
+    const normalized = original.toLowerCase();
+    
+    if (!seen.has(normalized)) {
+        seen.add(normalized);
+        // Optional: capitalize first letter of each word
+        const capitalized = original.replace(/\b\w/g, char => char.toUpperCase());
+        songNames.push(capitalized);
+    }
+    });
+    //const songNames = songList.map((song) => song.trackName);
+    const options = songNames.map((song) => ({ value: song, label: song }));
 
     const confirmGuess = () => {
         const newGuesses = [...guesses];
