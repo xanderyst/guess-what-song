@@ -22,6 +22,12 @@ const computeCountry = (genre:string, country:string) => {
   return chineseGenre.some(word => genre.toLowerCase().includes(word.toLowerCase())) ? 'tw' : country;
 };
 
+const normalizeSongName = (song: Song): string => {
+  const original = song.trackName.split('(')[0].trim();
+  const capitalized = original.replace(/\b\w/g, char => char.toUpperCase());
+  return capitalized;
+}
+
 export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSongContainerProps) {
   const { t, i18n } = useTranslation(); // Get language settings
   const { artistId, primaryGenreName } = artist;
@@ -37,7 +43,9 @@ export default function GuessSongContainer({ artist, fetchNewArtist }: GuessSong
   const [endGameMessage, setEndGameMessage] = useState<string>("");
   const [attempts, setAttempts] = useState<string[]>([]);
 
-  const songs = data?.results?.filter((item) => item.wrapperType === "track") || [];
+  const songs = data?.results?.filter((item) => item.wrapperType === "track").map((song) => {
+    return {...song, trackName: normalizeSongName(song)};
+  }) || [];
 
   useEffect(() => {
     if (songs.length > 0) {
